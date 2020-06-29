@@ -14,6 +14,6 @@ class Player(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def showdown(self) -> int:
+    def get(self) -> int:
         """手の公開."""
         return hand_constant.HandConstant.ROCK

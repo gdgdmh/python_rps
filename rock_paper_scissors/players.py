@@ -22,3 +22,7 @@ class Players():
     def length(self):
         """プレイヤーデータ数の取得."""
         return len(self.__players)
+
+    def get_hand(self, index) -> int:
+        """プレイヤーの手の取得."""
+        return self.__players[index].get()

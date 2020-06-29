@@ -8,12 +8,12 @@ from rock_paper_scissors import system_random_int
 class CpuPlayer(player.Player):
     """CPUプレイヤークラス."""
 
+    def __init__(self):
+        """コンストラクタ."""
+        self.__hand = hand_constant.HandConstant.ROCK
+
     def start_showdown(self):
         """手の公開の前に呼ばれる."""
-        pass
-
-    def showdown(self) -> int:
-        """手の公開."""
         r = system_random_int.SystemRandomInt()
         hands = [
             hand_constant.HandConstant.ROCK,
@@ -21,4 +21,8 @@ class CpuPlayer(player.Player):
             hand_constant.HandConstant.SCISSORS
         ]
         index = r.get_range(0, len(hands) - 1)
-        return hands[index]
+        self.__hand = hands[index]
+
+    def get(self) -> int:
+        """手の公開."""
+        return self.__hand
