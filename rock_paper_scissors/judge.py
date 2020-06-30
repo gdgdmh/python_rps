@@ -2,7 +2,7 @@
 """ジャンケンの手ジャッジインターフェース."""
 from abc import ABCMeta, abstractmethod
 
-from rock_paper_scissors import hand
+from rock_paper_scissors import players
 from rock_paper_scissors import result_constant
 
 
@@ -10,8 +10,8 @@ class Judge(metaclass=ABCMeta):
     """ジャンケンの手ジャッジインターフェース."""
 
     @abstractmethod
-    def set(self, hands: hand.Hand):
-        """判定のための手を設定."""
+    def set(self, players: players.Players):
+        """判定のためのプレイヤーを設定."""
         pass
 
     @abstractmethod
