@@ -10,6 +10,9 @@ class StandardJudge(judge.Judge):
     """ジャンケンの手ジャッジクラス."""
 
     HAND_TYPE_COUNT = 3
+    INDEX_ROCK = 0
+    INDEX_PAPER = 1
+    INDEX_SCISSORS = 2
 
     def __init__(self):
         """コンストラクタ."""
@@ -32,20 +35,18 @@ class StandardJudge(judge.Judge):
         if self._check_draw_same_hand(self.__players):
             return (result_constant.ResultConstant.DRAW, 0)
         # 勝敗
-        r = 0
-        p = 0
-        s = 0
-        r, p, s = self._get_index_by_hand(players)
-        return (r, p, s)
-        #  return self._check_result()
+        count = self._get_hand_count(self.__players)
+        win_hand = self._get_hand_index_to_win_hand(count)
+        result = self._create_win_result_info(win_hand, self.__players)
+        return result
 
-    def _get_index_by_hand(self, target_players: players.Players) -> (int, int, int):
-        """手ごとのプレイヤーindexを取得する(rock, paper, scissors)."""
+    def _get_hand_count(self, players: players.Players) -> (int, int, int):
+        """手ごとのcountを取得する(rock, paper, scissors)."""
         rock_count = 0
         paper_count = 0
         scissors_count = 0
-        for i in range(len(target_players)):
-            h = target_players.get_hand(i)
+        for i in range(players.length()):
+            h = players.get_hand(i)
             if h == hand_constant.HandConstant.ROCK:
                 rock_count = rock_count + 1
             if h == hand_constant.HandConstant.PAPER:
@@ -53,6 +54,34 @@ class StandardJudge(judge.Judge):
             if h == hand_constant.HandConstant.SCISSORS:
                 scissors_count = scissors_count + 1
         return (rock_count, paper_count, scissors_count)
+
+    def _get_hand_index_to_win_hand(self, hand_count: (int, int, int)) -> int:
+        """手のカウントから勝ちになる手を取得."""
+        if hand_count[self.INDEX_ROCK] > 0:
+            if hand_count[self.INDEX_SCISSORS] > 0:
+                return hand_constant.HandConstant.ROCK
+            if hand_count[self.INDEX_PAPER] > 0:
+                return hand_constant.HandConstant.PAPER
+        if hand_count[self.INDEX_PAPER] > 0:
+            if hand_count[self.INDEX_SCISSORS] > 0:
+                return hand_constant.HandConstant.SCISSORS
+        assert False
+        return hand_constant.HandConstant.ROCK
+
+    def _get_player_index_by_hand(self, players: players.Players, hand: int):
+        """指定された手を出しているプレイヤーindexをlistで取得."""
+        count = players.length()
+        counts = []
+        for i in range(count):
+            h = players.get_hand(i)
+            if h == hand:
+                counts.append(i)
+        return counts
+
+    def _create_win_result_info(self, win_hand: int, players: players.Players) -> (int, int):
+        """勝ちの結果情報を作成する."""
+        return (result_constant.ResultConstant.WIN,
+                self._get_player_index_by_hand(players, win_hand))
 
     def _check_result(self, hand1: int, hand2: int) -> (int, int):
         """ジャンケンの手で勝敗をチェックする(result, win(0 or 1))."""

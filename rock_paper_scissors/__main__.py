@@ -12,13 +12,19 @@ def main():
     print('main')
     s = standard_judge.StandardJudge()
     p = players.Players()
-    player_count = 1
-    for _ in range(player_count):
+    player_count = 3
+    for i in range(player_count):
         pl = debug_player.DebugPlayer()
-        pl.set(hand_constant.HandConstant.ROCK)
+        if i == 0:
+            pl.set(hand_constant.HandConstant.ROCK)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.ROCK)
         p.add(pl)
     s.set(p)
-
+    result = s.judge()
+    print(result)
 
 
 if __name__ == '__main__':

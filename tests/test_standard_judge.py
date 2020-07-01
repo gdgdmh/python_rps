@@ -44,6 +44,7 @@ def test_judge_rock_two():
     result = s.judge()
     assert result[0] == result_constant.ResultConstant.DRAW
     assert result[1] == 0
+    assert len(result) == 2
 
 
 def test_judge_paper_two():
@@ -59,6 +60,7 @@ def test_judge_paper_two():
     result = s.judge()
     assert result[0] == result_constant.ResultConstant.DRAW
     assert result[1] == 0
+    assert len(result) == 2
 
 
 def test_judge_scissors_two():
@@ -74,6 +76,7 @@ def test_judge_scissors_two():
     result = s.judge()
     assert result[0] == result_constant.ResultConstant.DRAW
     assert result[1] == 0
+    assert len(result) == 2
 
 
 def test_judge_all_type():
@@ -94,3 +97,295 @@ def test_judge_all_type():
     result = s.judge()
     assert result[0] == result_constant.ResultConstant.DRAW
     assert result[1] == 0
+    assert len(result) == 2
+
+
+def test_judge_rock_paper():
+    """ジャンケンの判定(rock, paper)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 2
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.ROCK)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.PAPER)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 1
+    assert len(result) == 2
+
+
+def test_judge_rock_scissors():
+    """ジャンケンの判定(rock, scissors)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 2
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.ROCK)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 0
+    assert len(result) == 2
+
+
+def test_judge_paper_scissors():
+    """ジャンケンの判定(paper, scissors)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 2
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 1
+    assert len(result) == 2
+
+
+def test_judge_rock_multi_paper():
+    """ジャンケンの判定(rock複数, paper)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 3
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.ROCK)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.ROCK)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 1
+    assert len(result) == 2
+
+
+def test_judge_rock_paper_multi():
+    """ジャンケンの判定(rock, paper複数)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 3
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.ROCK)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 0
+    assert result[1][1] == 1
+    assert len(result) == 2
+    assert len(result[1]) == 2
+
+
+def test_judge_rock_multi_paper_multi():
+    """ジャンケンの判定(rock複数, paper複数)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 5
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.ROCK)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.ROCK)
+        if i == 3:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 4:
+            pl.set(hand_constant.HandConstant.ROCK)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 0
+    assert result[1][1] == 3
+    assert len(result) == 2
+    assert len(result[1]) == 2
+
+
+def test_judge_rock_multi_scissors():
+    """ジャンケンの判定(rock複数, scissors)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 3
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.ROCK)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.ROCK)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 1
+    assert result[1][1] == 2
+    assert len(result) == 2
+    assert len(result[1]) == 2
+
+
+def test_judge_rock_scissors_multi():
+    """ジャンケンの判定(rock, scissors複数)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 4
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 3:
+            pl.set(hand_constant.HandConstant.ROCK)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 3
+    assert len(result) == 2
+
+
+def test_judge_rock_multi_scissors_multi():
+    """ジャンケンの判定(rock複数, scissors複数)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 6
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.ROCK)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.ROCK)
+        if i == 3:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 4:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 5:
+            pl.set(hand_constant.HandConstant.ROCK)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 1
+    assert result[1][1] == 2
+    assert result[1][2] == 5
+    assert len(result) == 2
+    assert len(result[1]) == 3
+
+
+def test_judge_paper_multi_scissors():
+    """ジャンケンの判定(papaer複数, scissors)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 5
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 3:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 4:
+            pl.set(hand_constant.HandConstant.PAPER)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 2
+    assert len(result) == 2
+    assert len(result[1]) == 1
+
+
+def test_judge_paper_scissors_multi():
+    """ジャンケンの判定(papaer, scissors複数)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 5
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 3:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 4:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 0
+    assert result[1][1] == 2
+    assert result[1][2] == 3
+    assert result[1][3] == 4
+    assert len(result) == 2
+    assert len(result[1]) == 4
+
+
+def test_judge_paper_multi_scissors_multi():
+    """ジャンケンの判定(papaer複数, scissors複数)."""
+    s = standard_judge.StandardJudge()
+    p = players.Players()
+    player_count = 7
+    for i in range(player_count):
+        pl = debug_player.DebugPlayer()
+        if i == 0:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 1:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 2:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 3:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 4:
+            pl.set(hand_constant.HandConstant.PAPER)
+        if i == 5:
+            pl.set(hand_constant.HandConstant.SCISSORS)
+        if i == 6:
+            pl.set(hand_constant.HandConstant.PAPER)
+        p.add(pl)
+    s.set(p)
+    result = s.judge()
+    assert result[0] == result_constant.ResultConstant.WIN
+    assert result[1][0] == 0
+    assert result[1][1] == 3
+    assert result[1][2] == 5
+    assert len(result) == 2
+    assert len(result[1]) == 3
