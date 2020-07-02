@@ -2,6 +2,7 @@
 """人間プレイヤークラス."""
 from rock_paper_scissors import player
 from rock_paper_scissors import hand_constant
+from rock_paper_scissors import input_keyboard
 
 
 class ManPlayer(player.Player):
@@ -10,12 +11,14 @@ class ManPlayer(player.Player):
     def __init__(self):
         """コンストラクタ."""
         self.__hand = hand_constant.HandConstant.ROCK
+        self.__input = input_keyboard.InputKeyboard()
 
     def start_showdown(self):
         """手の公開の前に呼ばれる."""
         loop = True
         while (loop):
-            input_data = input("rock か paper か scissors を入力して下さい >>")
+            print("rock か paper か scissors を入力して下さい >>", end="")
+            input_data = self.__input.input_string()
             if input_data == "rock":
                 self.__hand = hand_constant.HandConstant.ROCK
                 return
