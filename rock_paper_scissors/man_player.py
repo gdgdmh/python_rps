@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 """人間プレイヤークラス."""
-import sys
-
 from rock_paper_scissors import player
 from rock_paper_scissors import hand_constant
 
