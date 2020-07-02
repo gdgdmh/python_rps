@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+"""キーボード入力テスト."""
+import sys
+
+from rock_paper_scissors import input_keyboard
+
+
+def test_input_string_mock(capsys, monkeypatch):
+    """キーボード入力の取得(システムメソッドなのでダミーでテスト)."""
+    method_name = 'input_string'
+    p = 'aaa'
+    monkeypatch.setattr(input_keyboard.InputKeyboard, method_name, lambda x: p)
+    sut = input_keyboard.InputKeyboard()
+    result = sut.input_string()
+    assert result == p
