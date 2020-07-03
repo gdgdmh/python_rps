@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """キーボード入力テスト."""
-import sys
+
 
 from rock_paper_scissors import input_keyboard
 
