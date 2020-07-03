@@ -10,6 +10,6 @@ def test_input_string_mock(capsys, monkeypatch):
     method_name = 'input_string'
     p = 'aaa'
     monkeypatch.setattr(input_keyboard.InputKeyboard, method_name, lambda x: p)
-    sut = input_keyboard.InputKeyboard()
-    result = sut.input_string()
+    ik = input_keyboard.InputKeyboard()
+    result = ik.input_string()
     assert result == p
