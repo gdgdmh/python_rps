@@ -4,6 +4,7 @@ from rock_paper_scissors import judge
 from rock_paper_scissors import players
 from rock_paper_scissors import hand_constant
 from rock_paper_scissors import result_constant
+from typing import Tuple, List
 
 
 class StandardJudge(judge.Judge):
@@ -18,13 +19,13 @@ class StandardJudge(judge.Judge):
         """コンストラクタ."""
         self.__players = None
 
-    def set(self, players: players.Players):
+    def set(self, ps: players.Players):
         """判定のためにプレイヤーを設定."""
-        if str(type(players)) != "<class 'rock_paper_scissors.players.Players'>":
+        if str(type(ps)) != "<class 'rock_paper_scissors.players.Players'>":
             raise ValueError("players not rock_paper_scissors.players.Players")
-        self.__players = players
+        self.__players = ps
 
-    def judge(self) -> (int, int):
+    def judge(self) -> List[Tuple[int, List[int]]]:
         """設定されたジャンケンの手を判定して勝敗とplayerのindexを返す.DRAWの場合はindexは0."""
         if self.__players.length() <= 1:
             raise ValueError("players length <= 1. set player length >= 2")
@@ -35,18 +36,18 @@ class StandardJudge(judge.Judge):
         if self._check_draw_same_hand(self.__players):
             return (result_constant.ResultConstant.DRAW, 0)
         # 勝敗
-        count = self._get_hand_count(self.__players)
-        win_hand = self._get_hand_index_to_win_hand(count)
+        count = self._get_count(self.__players)
+        win_hand = self._get_win_hand(count)
         result = self._create_win_result_info(win_hand, self.__players)
         return result
 
-    def _get_hand_count(self, players: players.Players) -> (int, int, int):
+    def _get_count(self, p: players.Players) -> List[Tuple[int, int, int]]:
         """手ごとのcountを取得する(rock, paper, scissors)."""
         rock_count = 0
         paper_count = 0
         scissors_count = 0
-        for i in range(players.length()):
-            h = players.get_hand(i)
+        for i in range(p.length()):
+            h = p.get_hand(i)
             if h == hand_constant.HandConstant.ROCK:
                 rock_count = rock_count + 1
             if h == hand_constant.HandConstant.PAPER:
@@ -55,7 +56,7 @@ class StandardJudge(judge.Judge):
                 scissors_count = scissors_count + 1
         return (rock_count, paper_count, scissors_count)
 
-    def _get_hand_index_to_win_hand(self, hand_count: (int, int, int)) -> int:
+    def _get_win_hand(self, hand_count: List[Tuple[int, int, int]]) -> int:
         """手のカウントから勝ちになる手を取得."""
         if hand_count[self.INDEX_ROCK] > 0:
             if hand_count[self.INDEX_SCISSORS] > 0:
@@ -78,12 +79,13 @@ class StandardJudge(judge.Judge):
                 counts.append(i)
         return counts
 
-    def _create_win_result_info(self, win_hand: int, players: players.Players) -> (int, int):
-        """勝ちの結果情報を作成する."""
+    def _create_win_result_info(self, h: int, ps: players.Players) \
+            -> List[Tuple[int, int]]:
+        """手から勝ちの結果情報を作成する."""
         return (result_constant.ResultConstant.WIN,
-                self._get_player_index_by_hand(players, win_hand))
+                self._get_player_index_by_hand(ps, h))
 
-    def _check_result(self, hand1: int, hand2: int) -> (int, int):
+    def _check_result(self, hand1: int, hand2: int) -> List[Tuple[int, int]]:
         """ジャンケンの手で勝敗をチェックする(result, win(0 or 1))."""
         result = result_constant.ResultConstant.DRAW
         if hand1 == hand_constant.HandConstant.ROCK:
